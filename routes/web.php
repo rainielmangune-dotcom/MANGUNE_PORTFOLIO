@@ -1,18 +1,33 @@
 <?php
 
-use App\Http\Controllers;
-
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('register', [AuthController::'showRegister'])->name('register');
-Route::post('register',[AuthController::'register'])->name('register');
+// Registration Routes
+Route::get('register', [AuthController::class, 'showRegister'])->name('register.form');
+Route::post('register', [AuthController::class, 'register'])->name('register');
 
-Route::get('login',[AuthController::'showLogin'])->name('login.form');
-Route::post('login',[AuthController::'login'])->name('login.form');
+// Login Routes
+Route::get('login', [AuthController::class, 'showLogin'])->name('login.form');
+Route::post('login', [AuthController::class, 'login'])->name('login.submit');
 
-Route::get('login',[AuthController::'showLogin'])->name('login.form');
+// Contact Form
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
+// Optional login route
+Route::post('/login-submit', [AuthController::class, 'login'])->name('loginhome.form');
+
+// Admin Login
+Route::get('/admin/login', function () {
+    return view('authentication.AdminLogin'); 
+})->name('admin.login');
+
+// Dashboard Route
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
